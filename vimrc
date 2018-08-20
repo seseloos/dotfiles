@@ -84,7 +84,8 @@ set scrolloff=3                 " number of screen lines to keep above and below
 
 syntax on                       " enable syntax highlight
 
-" set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
+set splitbelow                  " splits horizontal windows below the current window
+set splitright                  " splits vertical windows right to the current window
 
 " ========= Mappings =========
 " remap window navigation
@@ -92,6 +93,9 @@ nnoremap <C-H> <C-W><C-H>       " switch to window on the left
 nnoremap <C-J> <C-W><C-J>       " switch to window below
 nnoremap <C-K> <C-W><C-K>       " switch to window above
 nnoremap <C-L> <C-W><C-L>       " switch to window on the right
+
+nnoremap <Leader>h :split<CR>   " split window horizontal
+nnoremap <Leader>v :vsplit<CR>  " split window vertical
 
 " ========= FZF =========
 " open FZF with Ctrl-P
