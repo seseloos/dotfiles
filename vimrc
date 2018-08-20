@@ -87,6 +87,12 @@ syntax on                       " enable syntax highlight
 set splitbelow                  " splits horizontal windows below the current window
 set splitright                  " splits vertical windows right to the current window
 
+" copy/paste/cut
+if has('unnamedplus')
+  " http://stackoverflow.com/questions/20186975/vim-mac-how-to-copy-to-clipboard-without-pbcopy
+  set clipboard=unnamed,unnamedplus
+end
+
 " ========= Mappings =========
 " remap window navigation
 nnoremap <C-H> <C-W><C-H>       " switch to window on the left
@@ -96,6 +102,23 @@ nnoremap <C-L> <C-W><C-L>       " switch to window on the right
 
 nnoremap <Leader>h :split<CR>   " split window horizontal
 nnoremap <Leader>v :vsplit<CR>  " split window vertical
+
+nnoremap <Leader>w :w!<CR>      " save file
+
+" ========= netrw =========
+" NERDtree like settings for netrw
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 25
+
+augroup ProjectDrawer
+  autocmd!
+  autocmd VimEnter * :Vexplore
+augroup END
+
+nnoremap <F2> :Vexplore<CR>     " opens netrw in vertical split
 
 " ========= FZF =========
 " open FZF with Ctrl-P
