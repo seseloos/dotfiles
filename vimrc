@@ -21,8 +21,8 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'airblade/vim-gitgutter'
 
-" statusline
- Plug 'itchyny/lightline.vim'
+Plug 'itchyny/lightline.vim'  " statusline
+Plug 'majutsushi/tagbar'
 
 " color scheme
 Plug 'dracula/vim', { 'as': 'dracula' }
@@ -55,6 +55,7 @@ set ruler                       " always show cursor position
 set wildmenu                    " display command line's tab complete option as a menu
 set cursorline                  " highlight the line currently under cursor
 set number                      " show line numbers
+set relativenumber              " enable relative numbers
 set noerrorbells                " disable beep on errors
 set title
 
@@ -89,6 +90,13 @@ if has('unnamedplus')
   set clipboard=unnamed,unnamedplus
 end
 
+" disable relativenumber when entering 'Insert' mode
+" enable relativenumber when leaving 'Insert' mode
+augroup toggle_relative_number
+  autocmd InsertEnter * :setlocal norelativenumber
+  autocmd InsertLeave * :setlocal relativenumber
+augroup END
+
 " ========= Mappings =========
 " remap window navigation
 nnoremap <C-H> <C-W><C-H>       " switch to window on the left
@@ -100,6 +108,11 @@ nnoremap <Leader>h :split<CR>   " split window horizontal
 nnoremap <Leader>v :vsplit<CR>  " split window vertical
 
 nnoremap <Leader>w :w!<CR>      " save file
+
+" easier jump between errors in quickfix list
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
 
 " ========= netrw =========
 " NERDtree like settings for netrw
@@ -167,9 +180,33 @@ let g:go_highlight_format_strings = 1
 
 let g:go_auto_sameids = 1
 
-map <C-n> :cnext<CR>
-map <C-m> :cprevious<CR>
-nnoremap <leader>a :cclose<CR>
+let g:tagbar_type_go = {
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+\ }
 
 " run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()
@@ -236,3 +273,6 @@ xmap <C-k>     <Plug>(neosnippet_expand_target)
 
 imap <expr><TAB> pumvisible() ? "\<C-n>" : neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+" ========= tagbar =========
+nmap <F4> :TagbarToggle<CR>
