@@ -98,12 +98,25 @@ augroup toggle_relative_number
 augroup END
 
 " ========= Mappings =========
+" Fix some common typos
+cnoreabbrev W! w!
+cnoreabbrev Q! q!
+cnoreabbrev Qall! qall!
+cnoreabbrev Wq wq
+cnoreabbrev Wa wa
+cnoreabbrev wQ wq
+cnoreabbrev WQ wq
+cnoreabbrev W w
+cnoreabbrev Q q
+cnoreabbrev Qall qall
+
 " remap window navigation
 nnoremap <C-H> <C-W><C-H>       " switch to window on the left
 nnoremap <C-J> <C-W><C-J>       " switch to window below
 nnoremap <C-K> <C-W><C-K>       " switch to window above
 nnoremap <C-L> <C-W><C-L>       " switch to window on the right
 
+" split creation
 nnoremap <Leader>h :split<CR>   " split window horizontal
 nnoremap <Leader>v :vsplit<CR>  " split window vertical
 
