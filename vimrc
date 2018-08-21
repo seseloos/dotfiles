@@ -25,22 +25,18 @@ Plug 'airblade/vim-gitgutter'
  Plug 'itchyny/lightline.vim'
 
 " color scheme
-" Plug 'morhetz/gruvbox'
 Plug 'dracula/vim', { 'as': 'dracula' }
 
 " languages
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }	" Go
 Plug 'zchee/deoplete-go', { 'do': 'make'}	        " Go support for deoplete
-" Plug 'AndrewRadev/splitjoin.vim'
+Plug 'AndrewRadev/splitjoin.vim'
 
 call plug#end()
-""}}
 
 " ========= General Settings =========
 
-" set background=dark
 set termguicolors
-" colorscheme gruvbox
 colorscheme dracula
 
 " set leader key
@@ -113,10 +109,10 @@ let g:netrw_browse_split = 4
 let g:netrw_altv = 1
 let g:netrw_winsize = 25
 
-augroup ProjectDrawer
-  autocmd!
-  autocmd VimEnter * :Vexplore
-augroup END
+" augroup ProjectDrawer
+"   autocmd!
+"   autocmd VimEnter * :Vexplore
+" augroup END
 
 nnoremap <F2> :Vexplore<CR>     " opens netrw in vertical split
 
@@ -175,12 +171,6 @@ map <C-n> :cnext<CR>
 map <C-m> :cprevious<CR>
 nnoremap <leader>a :cclose<CR>
 
-" autocmd Filetype go nmap <leader>b <Plug>(go-build)
-autocmd Filetype go nmap <leader>r <Plug>(go-run)
-autocmd Filetype go nmap <leader>t <Plug>(go-test)
-autocmd Filetype go nmap <leader>c <Plug>(go-coverage-toggle)
-autocmd FileType go nmap <Leader>i <Plug>(go-info)
-
 " run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()
 	let l:file = expand('%')
@@ -191,7 +181,30 @@ function! s:build_go_files()
 	endif
 endfunction
 
-autocmd Filetype go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+augroup go
+  autocmd!
+
+  autocmd FileType go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+  autocmd FileType go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+  autocmd FileType go command! -bang AH call go#alternate#Switch(<bang>0, 'spli')
+  autocmd FileType go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+
+  autocmd Filetype go nmap <Leader>r <Plug>(go-run)
+  autocmd Filetype go nmap <Leader>t <Plug>(go-test)
+  autocmd Filetype go nmap <Leader>c <Plug>(go-coverage-toggle)
+  autocmd FileType go nmap <Leader>i <Plug>(go-info)
+  autocmd Filetype go nmap <Leader>b :<C-u>call <SID>build_go_files()<CR>
+
+  autocmd FileType go nmap <Leader>gdv <Plug>(go-def-vertical)
+  " autocmd FileType go nmap <Leader>gdh <Plug>(go-def-split)
+  autocmd FileType go nmap <Leader>gDv <Plug>(go-doc-vertical)
+  " autocmd FileType go nmap <Leader>gDh <Plug>(go-doc-split)
+
+  autocmd FileType go nmap <C-g> :GoDecls<CR>
+  autocmd FileType go imap <C-g> <ESC>:<C-u>GoDecls<CR>
+
+  autocmd FileType go nmap <Leader>gt :GoDeclsDir<CR>
+augroup END
 
 " ========= deoplete =========
 if has('nvim')
