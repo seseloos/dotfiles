@@ -127,6 +127,12 @@ map <C-n> :cnext<CR>
 map <C-m> :cprevious<CR>
 nnoremap <leader>a :cclose<CR>
 
+function! s:clear_search_highlight()
+  let @/ = ""
+  call go#guru#ClearSameIds()
+endfunction
+nnoremap <silent> <leader>csh :<C-u>call <SID>clear_search_highlight()<CR>
+
 " ========= netrw =========
 " NERDtree like settings for netrw
 let g:netrw_banner = 0
