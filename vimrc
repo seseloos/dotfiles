@@ -7,14 +7,15 @@ call plug#begin(expand('~/.config/nvim/plugged'))
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 Plug 'mhinz/vim-grepper'	" grep
-Plug 'w0rp/ale'			    " linting
+" Plug 'w0rp/ale'			    " linting
 
 " autocompletion
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 
 " snippets
-Plug 'Shougo/neosnippet.vim'
-Plug 'Shougo/neosnippet-snippets'
+" Plug 'Shougo/neosnippet.vim'
+" Plug 'Shougo/neosnippet-snippets'
 
 Plug 'wellle/targets.vim'
 Plug 'tpope/vim-surround'
@@ -28,8 +29,8 @@ Plug 'majutsushi/tagbar'
 Plug 'dracula/vim', { 'as': 'dracula' }
 
 " languages
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }	" Go
-Plug 'zchee/deoplete-go', { 'do': 'make'}	        " Go support for deoplete
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }	" Go
+" Plug 'zchee/deoplete-go', { 'do': 'make'}	        " Go support for deoplete
 Plug 'AndrewRadev/splitjoin.vim'
 
 call plug#end()
@@ -182,6 +183,9 @@ nnoremap <Leader>* :Grepper -cword -noprompt<CR>
 nmap gs <plug>(GrepperOperator)
 xmap gs <plug>(GrepperOperator)
 
+" ========= yaml =========
+autocmd BufNewFile,BufRead *.{yaml,yml} setlocal filetype=yaml foldmethod=indent tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+
 " ========= vim-go =========
 autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 
 
@@ -262,36 +266,103 @@ augroup go
   autocmd FileType go nmap <Leader>gt :GoDeclsDir<CR>
 augroup END
 
-" ========= deoplete =========
-if has('nvim')
-	" enable deoplete on startup
-	let g:deoplete#enable_at_startup = 1
-endif
+" " ========= deoplete =========
+" if has('nvim')
+" 	" enable deoplete on startup
+" 	let g:deoplete#enable_at_startup = 1
+" endif
 
-" neocomplete like
-set completeopt+=noinsert
-" deoplete.nvim recommend
-set completeopt+=noselect
+" " neocomplete like
+" set completeopt+=noinsert
+" " deoplete.nvim recommend
+" set completeopt+=noselect
 
-" Skip the check of neovim module
-let g:python3_host_skip_check = 1
+" " Skip the check of neovim module
+" let g:python3_host_skip_check = 1
 
-" specifies path to gocode binary
-let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-" specifies the sort order for gocode
-let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
-" Enable completing of go pointers
-let g:deoplete#sources#go#pointer = 1
-" enable to automatically set GOOS environment when calling gocode
-let g:deoplete#sources#go#auto_goos = 1
+" " specifies path to gocode binary
+" let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+" " specifies the sort order for gocode
+" let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+" " Enable completing of go pointers
+" let g:deoplete#sources#go#pointer = 1
+" " enable to automatically set GOOS environment when calling gocode
+" let g:deoplete#sources#go#auto_goos = 1
 
-" ========= neosnippet =========
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
+" " ========= neosnippet =========
+" imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" xmap <C-k>     <Plug>(neosnippet_expand_target)
 
-imap <expr><TAB> pumvisible() ? "\<C-n>" : neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+" imap <expr><TAB> pumvisible() ? "\<C-n>" : neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+" smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
-" ========= tagbar =========
+" " ========= tagbar =========
 nmap <F4> :TagbarToggle<CR>
+
+" -------------------------------------------------------------------------------------------------
+" coc.nvim default settings
+" -------------------------------------------------------------------------------------------------
+
+" if hidden is not set, TextEdit might fail.
+set hidden
+" Better display for messages
+set cmdheight=2
+" Smaller updatetime for CursorHold & CursorHoldI
+set updatetime=300
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+" always show signcolumns
+set signcolumn=yes
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use `[c` and `]c` to navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use U to show documentation in preview window
+nnoremap <silent> U :call <SID>show_documentation()<CR>
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+vmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
