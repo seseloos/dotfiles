@@ -24,6 +24,7 @@ Plug 'airblade/vim-gitgutter'
 
 Plug 'itchyny/lightline.vim'  " statusline
 Plug 'majutsushi/tagbar'
+Plug 'AndrewRadev/splitjoin.vim'
 
 " color scheme
 Plug 'dracula/vim', { 'as': 'dracula' }
@@ -31,7 +32,7 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 " languages
 " Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }	" Go
 " Plug 'zchee/deoplete-go', { 'do': 'make'}	        " Go support for deoplete
-Plug 'AndrewRadev/splitjoin.vim'
+Plug 'cespare/vim-toml'
 
 call plug#end()
 
