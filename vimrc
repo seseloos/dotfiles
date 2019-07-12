@@ -26,6 +26,11 @@ Plug 'itchyny/lightline.vim'  " statusline
 Plug 'majutsushi/tagbar'
 Plug 'AndrewRadev/splitjoin.vim'
 
+" Distraction-free writing
+Plug 'junegunn/goyo.vim'
+" Paragraph highlighting - good for focusing
+Plug 'junegunn/limelight.vim'
+
 " color scheme
 Plug 'dracula/vim', { 'as': 'dracula' }
 
@@ -33,6 +38,7 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 " Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }	" Go
 " Plug 'zchee/deoplete-go', { 'do': 'make'}	        " Go support for deoplete
 Plug 'cespare/vim-toml'
+Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
 
 call plug#end()
 
@@ -186,6 +192,14 @@ xmap gs <plug>(GrepperOperator)
 
 " ========= yaml =========
 autocmd BufNewFile,BufRead *.{yaml,yml} setlocal filetype=yaml foldmethod=indent tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+
+" ========= Markdown =========
+autocmd FileType markdown set conceallevel=0
+autocmd FileType markdown normal zR
+
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_toml_frontmatter = 1
+" let g:vim_markdown_json_frontmatter = 1
 
 " ========= vim-go =========
 autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 
