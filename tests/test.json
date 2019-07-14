@@ -1,0 +1,27 @@
+{
+  "firstName": "Max",
+  "lastName": "Mustermann",
+  "address": {
+    "street": "Somewhere Str.",
+    "houseNumber": "123 A",
+    "zip": "12345",
+    "city": "City",
+    "region": "Region",
+    "country": "Country"
+  },
+  "hobbies": [
+    "read",
+    "mountain biking",
+    "swimming"
+  ],
+  "messengers": [
+    {
+      "name": "whatsapp",
+      "username": "max.mustermann"
+    },
+    {
+      "name": "facebook",
+      "username": "max.mustermman"
+    }
+  ]
+}
