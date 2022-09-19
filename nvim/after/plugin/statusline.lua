@@ -8,7 +8,7 @@ require('lualine').setup {
         lualine_a = {'mode'},
         lualine_b = {'branch', 'diff', 'diagnostics'},
         lualine_c = {'filename'},
-        lualine_x = {'encoding', 'fileformat', 'filetype'},
+        lualine_x = {'encoding', {'fileformat', icons_enabled=false}, 'filetype'},
         lualine_y = {'windows'},
         lualine_z = {'location'}
     },
