@@ -23,7 +23,11 @@ packer.startup(function(use)
     use 'nvim-treesitter/nvim-treesitter'
 
     -- lsp configuration
-    use 'neovim/nvim-lspconfig'
+    use 'neovim/nvim-lspconfig'     -- collection of configurations for neovim built-in LSP client
+    use 'hrsh7th/nvim-cmp'          -- autocompletion plugin/engine
+    use 'hrsh7th/cmp-nvim-lsp'      -- LSP source for nvim-cmp
+    use 'saadparwaiz1/cmp_luasnip'  -- snippets source for nvim-cmp
+    use 'L3MON4D3/LuaSnip'          -- snippets plugin/engine
 
     -- color scheme
     use 'Mofiqul/dracula.nvim'
