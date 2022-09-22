@@ -29,6 +29,10 @@ packer.startup(function(use)
     use 'saadparwaiz1/cmp_luasnip'  -- snippets source for nvim-cmp
     use 'L3MON4D3/LuaSnip'          -- snippets plugin/engine
 
+    -- telescope
+    use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } }
+    use 'nvim-telescope/telescope-file-browser.nvim'
+
     -- color scheme
     use 'Mofiqul/dracula.nvim'
 
