@@ -33,6 +33,9 @@ packer.startup(function(use)
     use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } }
     use 'nvim-telescope/telescope-file-browser.nvim'
 
+    -- editing
+    use 'tpope/vim-commentary'      -- motions for commenting stuff out
+
     -- color scheme
     use 'Mofiqul/dracula.nvim'
 
