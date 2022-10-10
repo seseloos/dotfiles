@@ -38,9 +38,7 @@ packer.startup(function(use)
 
     -- color scheme
     use 'Mofiqul/dracula.nvim'
-    use 'folke/tokyonight.nvim'
     use 'catppuccin/nvim'
-    use 'EdenEast/nightfox.nvim'
 
     -- statusline
     use 'nvim-lualine/lualine.nvim'

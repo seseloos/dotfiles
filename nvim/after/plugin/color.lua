@@ -4,9 +4,6 @@ vim.opt.background = "dark"
 -- misc
 vim.opt.termguicolors = true
 
--- tokyonight setup
--- require('tokyonight').setup()
-
 -- catppuccin setup
 vim.g.catppuccin_flavor = "mocha"
 require('catppuccin').setup({
@@ -33,6 +30,4 @@ require('catppuccin').setup({
 })
 
 -- color scheme
--- vim.cmd[[colorscheme dracula]]
--- vim.cmd[[colorscheme tokyonight]]
 vim.cmd[[colorscheme catppuccin]]
