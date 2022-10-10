@@ -28,6 +28,17 @@ vim.opt.wrap = false            -- disable line wrapping
 -- window options
 vim.opt.laststatus = 3
 
+-- backup and swap options
+vim.opt.backup = false          -- disable backup files
+vim.opt.writebackup = false     -- disable writing backup files
+vim.opt.swapfile = false        -- disable swap files
+
+-- file and buffer options
+vim.opt.autoread = true         -- loading file changes from disk
+
+-- copy/paste/cut options
+vim.opt.clipboard = "unnamedplus"   -- enable y and p with the system clipboard
+
 -- misc options
 vim.opt.scrolloff = 20          -- number of lines to keep above and below the cursor
 
