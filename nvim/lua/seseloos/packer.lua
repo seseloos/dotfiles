@@ -28,6 +28,7 @@ packer.startup(function(use)
     use 'hrsh7th/cmp-nvim-lsp'      -- LSP source for nvim-cmp
     use 'saadparwaiz1/cmp_luasnip'  -- snippets source for nvim-cmp
     use 'L3MON4D3/LuaSnip'          -- snippets plugin/engine
+    use 'folke/neodev.nvim'         -- autocompletion for nvim lua API
 
     -- telescope
     use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } }

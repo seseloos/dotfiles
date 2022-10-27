@@ -1,3 +1,8 @@
+-- 
+-- Setup neodev
+-- MUST be done before lspconfig
+require('neodev').setup({})
+
 local lspconfig = require 'lspconfig'
 local util = require 'lspconfig.util'
 local luasnip = require 'luasnip'
@@ -85,6 +90,10 @@ lspconfig.sumneko_lua.setup {
             diagnostics = {
                 -- Get the language server to recognize the `vim` global
                 globals = {'vim'},
+            },
+            completion = {
+                -- enable call snippets and configure it to use folke/neodev
+                callSnippet = "Replace"
             },
         },
     },
