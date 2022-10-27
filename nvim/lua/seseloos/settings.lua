@@ -27,6 +27,8 @@ vim.opt.wrap = false            -- disable line wrapping
 
 -- window options
 vim.opt.laststatus = 3
+vim.opt.splitright = true       -- open vertical splits to the right
+vim.opt.splitbelow = true       -- open horizontal splits below
 
 -- backup and swap options
 vim.opt.backup = false          -- disable backup files
