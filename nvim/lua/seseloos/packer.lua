@@ -36,6 +36,10 @@ packer.startup(function(use)
 
     -- editing
     use 'tpope/vim-commentary'      -- motions for commenting stuff out
+    use { 'folke/todo-comments.nvim', requires = { 'nvim-lua/plenary.nvim' } }
+
+    -- git
+    use 'lewis6991/gitsigns.nvim'
 
     -- color scheme
     use 'Mofiqul/dracula.nvim'
