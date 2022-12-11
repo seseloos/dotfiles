@@ -6,6 +6,7 @@ configs.setup {
         "go",
         "gomod",
         "gowork",
+        "help",
         "html",
         "javascript",
         "json",

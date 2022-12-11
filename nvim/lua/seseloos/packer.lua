@@ -22,13 +22,19 @@ packer.startup(function(use)
     -- treesitter
     use 'nvim-treesitter/nvim-treesitter'
 
-    -- lsp configuration
-    use 'neovim/nvim-lspconfig'     -- collection of configurations for neovim built-in LSP client
+    -- lsp
+    use 'neovim/nvim-lspconfig'             -- collection of configurations for neovim built-in LSP client
+    use "williamboman/mason.nvim"           -- managing LSP server, DAP server, linters and formatters
+    use "williamboman/mason-lspconfig.nvim" -- bridges gap b/w mason and lspconfig
+
+    -- autocompletion
     use 'hrsh7th/nvim-cmp'          -- autocompletion plugin/engine
     use 'hrsh7th/cmp-nvim-lsp'      -- LSP source for nvim-cmp
+    use 'folke/neodev.nvim'         -- autocompletion for nvim lua API
+
+    -- snippets
     use 'saadparwaiz1/cmp_luasnip'  -- snippets source for nvim-cmp
     use 'L3MON4D3/LuaSnip'          -- snippets plugin/engine
-    use 'folke/neodev.nvim'         -- autocompletion for nvim lua API
 
     -- telescope
     use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } }
@@ -42,7 +48,6 @@ packer.startup(function(use)
     use 'lewis6991/gitsigns.nvim'
 
     -- color scheme
-    use 'Mofiqul/dracula.nvim'
     use 'catppuccin/nvim'
 
     -- statusline
