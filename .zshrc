@@ -8,7 +8,13 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="dracula"
+# ZSH_THEME="dracula"
+
+
+# Loading catppuccin zsh-syntax-highlighting theme before
+# zsh-syntax-highlighting is loaded
+source ~/Development/catppuccin/zsh-syntax-highlighting/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh
+
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -79,3 +85,5 @@ if command -v jenv 1>/dev/null 2>&1; then
   eval "$(jenv init -)"
 fi
 
+# Setup starship prompt
+eval "$(starship init zsh)"
