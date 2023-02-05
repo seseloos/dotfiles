@@ -18,12 +18,13 @@ vim.opt.smartindent = true
 -- vim.opt.breakindent = true
 
 -- search options
--- case insensitive seaching unless /C or capital in search
+-- case insensitive searching unless /C or capital in search
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- line options
 vim.opt.wrap = false            -- disable line wrapping
+vim.opt.colorcolumn = "80,120"  -- highligh columns 80 and 120 to prevent long lines
 
 -- window options
 vim.opt.laststatus = 3

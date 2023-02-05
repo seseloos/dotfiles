@@ -1,4 +1,4 @@
--- 
+--
 -- Setup neodev
 -- MUST be done before lspconfig
 require('neodev').setup({})
@@ -21,11 +21,27 @@ local on_attach = function(client, bufnr)
 
     -- Mappings
     -- See `:help vim.lsp.*` for documentation on any of the below functions
-    local bufopts = { noremap=true, silent=true, buffer=bufnr }
+    local bufopts = { noremap = true, silent = true, buffer = bufnr }
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
     vim.keymap.set('n', '<leader>f', vim.lsp.buf.formatting, bufopts)
+    -- [R]e[n]ame
+    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
+    -- [C]ode [A]ction
+    vim.keymap.set('n', 'leader>ca', vim.lsp.buf.code_action, bufopts)
+    -- [G]oto [R]eferences
+    vim.keymap.set('n', '<leader>gr', require('telescope.builtin').lsp_references, bufopts)
+    -- [G]oto [I]mplementation
+    vim.keymap.set('n', '<leader>gI', vim.lsp.buf.implementation, bufopts)
+    -- [O]pen [D]iagnostic float
+    vim.keymap.set('n', '<leader>od', vim.diagnostic.open_float, bufopts)
+    -- [D]iagnostic Goto [N]ext
+    vim.keymap.set('n', '<leader>dn', vim.diagnostic.goto_next, bufopts)
+    -- [D]iagnostic Goto [P]revious
+    vim.keymap.set('n', '<leader>dp', vim.diagnostic.goto_prev, bufopts)
+    -- [D]iagnostic set [L]oc list
+    vim.keymap.set('n', '<leader>dl', vim.diagnostic.setloclist, bufopts)
 end
 
 --
@@ -42,6 +58,7 @@ lspconfig.gopls.setup {
         },
     },
 }
+
 
 -- Helper function that orders Go imports on save, like `goimports`
 function go_org_imports(timeout_ms)
@@ -89,7 +106,7 @@ lspconfig.sumneko_lua.setup {
             },
             diagnostics = {
                 -- Get the language server to recognize the `vim` global
-                globals = {'vim'},
+                globals = { 'vim' },
             },
             completion = {
                 -- enable call snippets and configure it to use folke/neodev
@@ -110,7 +127,11 @@ lspconfig.yamlls.setup {
         return util.find_git_ancestor(fname)
     end,
     settings = {
-        yaml = {},
+        yaml = {
+            -- schemas = {
+            --     ["https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.0/schema.yaml"] = "*api.yml"
+            -- },
+        },
         redhat = {
             telemetry = { enabled = false },
         },
