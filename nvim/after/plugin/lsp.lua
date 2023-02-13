@@ -95,7 +95,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 
 --
 -- Setup LSP for Lua
-lspconfig.sumneko_lua.setup {
+lspconfig.lua_ls.setup {
     on_attach = on_attach,
     capabilities = capabilities,
     settings = {
@@ -111,6 +111,14 @@ lspconfig.sumneko_lua.setup {
             completion = {
                 -- enable call snippets and configure it to use folke/neodev
                 callSnippet = "Replace"
+            },
+            workspace = {
+                -- Make the server aware of Neovim runtime files
+                library = vim.api.nvim_get_runtime_file("", true),
+            },
+            -- Do not send telemetry data containing a randomized but unique identifier
+            telemetry = {
+                enable = false,
             },
         },
     },
