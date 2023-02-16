@@ -17,6 +17,7 @@ configs.setup {
         "regex",
         "rust",
         "scss",
+        "sql",
         "toml",
         "yaml",
     },
