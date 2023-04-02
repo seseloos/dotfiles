@@ -8,7 +8,7 @@ configs.setup {
         "gomod",
         "gosum",
         "gowork",
-        "help",
+        -- "help",
         "html",
         "javascript",
         "json",
