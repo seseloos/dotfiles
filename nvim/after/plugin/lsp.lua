@@ -25,7 +25,8 @@ local on_attach = function(client, bufnr)
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-    vim.keymap.set('n', '<leader>f', vim.lsp.buf.formatting, bufopts)
+    -- [F]or[M]at
+    -- vim.keymap.set('n', '<leader>fm', vim.lsp.buf.format, bufopts)
     -- [R]e[n]ame
     vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
     -- [C]ode [A]ction
@@ -59,38 +60,20 @@ lspconfig.gopls.setup {
     },
 }
 
-
--- Helper function that orders Go imports on save, like `goimports`
-function go_org_imports(timeout_ms)
-    local params = vim.lsp.util.make_range_params()
-    params.context = { only = { 'source.organizeImports' } }
-
-    local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, timeout_ms)
-    for _, res in pairs(result or {}) do
-        for _, r in pairs(res.result or {}) do
-            if r.edit then
-                vim.lsp.util.apply_workspace_edit(r.edit, vim.lsp.util._get_offset_encoding())
-            else
-                vim.lsp.buf.execute_command(r.command)
-            end
-        end
-    end
-end
-
 -- Run `gofmt` before writting a buffer
 vim.api.nvim_create_autocmd('BufWritePre', {
     pattern = { '*.go' },
     callback = function()
-        vim.lsp.buf.formatting_sync(nil, 3000)
+        vim.lsp.buf.format()
     end,
 })
 
 -- Organize Go imports before writting a buffer
 vim.api.nvim_create_autocmd('BufWritePre', {
-    pattern = { '*.go' },
+    pattern = '*.go',
     callback = function()
-        go_org_imports(3000)
-    end,
+        vim.lsp.buf.code_action({ context = { only = { 'source.organizeImports' } }, apply = true })
+    end
 })
 
 --

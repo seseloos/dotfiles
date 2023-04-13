@@ -45,14 +45,15 @@ root: <%= @args[0]  %>
 # attach: false
 
 windows:
-  - editor:
-      layout: main-horizontal
-      # Synchronize all panes of this window, can be enabled before or after the pane commands run.
-      # 'before' represents legacy functionality and will be deprecated in a future release, in favour of 'after'
-      # synchronize: after
-      panes:
-        - nvim .
-        - zsh
-        # - zsh
+  - editor: nvim .
+  - cli:
+  # - editor:
+  #     layout: main-horizontal
+  #     # Synchronize all panes of this window, can be enabled before or after the pane commands run.
+  #     # 'before' represents legacy functionality and will be deprecated in a future release, in favour of 'after'
+  #     # synchronize: after
+  #     panes:
+  #       - nvim .
+  #       - zsh
 #  - server: bundle exec rails s
 #  - logs: tail -f log/development.log
