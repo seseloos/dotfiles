@@ -54,6 +54,13 @@ local plugins = {
 
     -- icons
     'nvim-tree/nvim-web-devicons',
+
+    -- util
+    {
+       "m4xshen/hardtime.nvim",
+       dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
+       opts = {}
+    },
 }
 
 local opts = {}
