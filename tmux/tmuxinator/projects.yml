@@ -47,6 +47,7 @@ root: <%= @args[0]  %>
 windows:
   - editor: nvim .
   - cli:
+  - git: lazygit
   # - editor:
   #     layout: main-horizontal
   #     # Synchronize all panes of this window, can be enabled before or after the pane commands run.

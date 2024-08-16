@@ -62,6 +62,11 @@ export EDITOR=$VISUAL
 
 alias git='LANG=en_US.UTF-8 git'
 
+# fzf
+if command -v fzf 1>/dev/null 2>&1; then
+    eval "$(fzf --zsh)"
+fi
+
 # NVM
 export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm

@@ -56,11 +56,12 @@ local plugins = {
     'nvim-tree/nvim-web-devicons',
 
     -- util
-    {
-       "m4xshen/hardtime.nvim",
-       dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
-       opts = {}
-    },
+    -- {
+    --     -- learn better vim motions by disabling easy motions
+    --    "m4xshen/hardtime.nvim",
+    --    dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
+    --    opts = {}
+    -- },
 }
 
 local opts = {}
