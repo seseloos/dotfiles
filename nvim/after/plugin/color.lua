@@ -7,6 +7,7 @@ vim.opt.termguicolors = true
 -- catppuccin setup
 vim.g.catppuccin_flavor = "mocha"
 require('catppuccin').setup({
+    transparent_background = true, -- disables setting the background color
     integrations = {
         cmp = true,
         telescope = true,
