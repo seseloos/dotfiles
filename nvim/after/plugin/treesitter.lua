@@ -16,7 +16,10 @@ configs.setup {
         "make",
         "markdown",
         "markdown_inline",
+        "python",
         "regex",
+        -- Python/pip requirements
+        "requirements",
         "rust",
         "scss",
         "sql",

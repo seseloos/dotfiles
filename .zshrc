@@ -46,12 +46,17 @@ setopt SHARE_HISTORY            # share command history data between all session
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 
+# Projects
+export PROJECTS=$HOME/Development/Projects
+
+# Go
 export GOPATH=$HOME/Development/go
 export PATH=$GOPATH/bin:$PATH
 
 export GOPRIVATE=*.experienceone.com
 
-export PROJECTS=$HOME/Development/Projects
+# n8n
+export N8N_RUNNERS_ENABLED=true
 
 if type nvim > /dev/null 2>&1; then
 	alias vim='nvim'
@@ -77,6 +82,7 @@ export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
 fi
 
 # JAVA
@@ -90,3 +96,5 @@ export KUBECONFIG="$(ls -1p ~/.kube/config ~/.kube/*.kubecfg | xargs echo | sed 
 
 # Setup starship prompt
 eval "$(starship init zsh)"
+eval "$(uv generate-shell-completion zsh)"
+eval "$(uvx --generate-shell-completion zsh)"

@@ -38,9 +38,9 @@ local on_attach = function(client, bufnr)
     -- [O]pen [D]iagnostic float
     vim.keymap.set('n', '<leader>od', vim.diagnostic.open_float, bufopts)
     -- [D]iagnostic Goto [N]ext
-    vim.keymap.set('n', '<leader>dn', vim.diagnostic.goto_next, bufopts)
+    vim.keymap.set('n', '<leader>dn', function() vim.diagnostic.jump({ count = 1, float = true }) end, bufopts)
     -- [D]iagnostic Goto [P]revious
-    vim.keymap.set('n', '<leader>dp', vim.diagnostic.goto_prev, bufopts)
+    vim.keymap.set('n', '<leader>dp', function() vim.diagnostic.jump({ count = -1, float = true }) end, bufopts)
     -- [D]iagnostic set [L]oc list
     vim.keymap.set('n', '<leader>dl', vim.diagnostic.setloclist, bufopts)
 end
@@ -115,7 +115,7 @@ lspconfig.yamlls.setup {
     cmd = { 'yaml-language-server', '--stdio' },
     filetypes = { 'yaml', 'yaml.docker-compose' },
     root_dir = function(fname)
-        return util.find_git_ancestor(fname)
+        return vim.fs.dirname(vim.fs.find('.git', { path = fname, upward = true })[1])
     end,
     settings = {
         yaml = {
@@ -128,6 +128,50 @@ lspconfig.yamlls.setup {
         },
     },
 }
+
+--
+-- Setup LSP for Pyhton - Ruff
+vim.lsp.config('ruff', {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    init_options = {
+        settings = {},
+    }
+})
+vim.lsp.enable('ruff')
+
+vim.api.nvim_create_autocmd("LspAttach", {
+    group = vim.api.nvim_create_augroup('lsp_attach_disable_ruff_hover', { clear = true }),
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if client == nil then
+            return
+        end
+        if client.name == 'ruff' then
+            -- Disable Ruff's hover in favor of Pyright
+            client.server_capabilities.hoverProvider = false
+        end
+    end,
+    desc = 'LSP: Disable hover capability of ruff',
+})
+
+vim.lsp.config('pyright', {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    settings = {
+        pyright = {
+            -- Using Ruff's import organizer
+            disableOrganizeImports = true,
+        },
+        python = {
+            analysis = {
+                -- Ignore all files for analysis to exclusively use Ruff for linting
+                ignore = { '*' },
+            },
+        },
+    },
+})
+vim.lsp.enable('pyright')
 
 --
 -- Setup autocompletion with `nvim-cmp`
