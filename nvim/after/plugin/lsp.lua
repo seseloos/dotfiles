@@ -47,7 +47,7 @@ end
 
 --
 -- Setup LSP for Go
-lspconfig.gopls.setup {
+vim.lsp.config('gopls', {
     on_attach = on_attach,
     capabilities = capabilities,
     cmd = { 'gopls', 'serve' },
@@ -58,7 +58,8 @@ lspconfig.gopls.setup {
             usePlaceholders = true,
         },
     },
-}
+})
+vim.lsp.enable('gopls')
 
 -- Run `gofmt` before writting a buffer
 vim.api.nvim_create_autocmd('BufWritePre', {
@@ -72,13 +73,19 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 vim.api.nvim_create_autocmd('BufWritePre', {
     pattern = '*.go',
     callback = function()
-        vim.lsp.buf.code_action({ context = { only = { 'source.organizeImports' } }, apply = true })
+        vim.lsp.buf.code_action({
+            context = {
+                only = { 'source.organizeImports' },
+                diagnostics = vim.diagnostic.get(vim.api.nvim_get_current_buf())
+            },
+            apply = true,
+        })
     end
 })
 
 --
 -- Setup LSP for Lua
-lspconfig.lua_ls.setup {
+vim.lsp.config('lua_ls', {
     on_attach = on_attach,
     capabilities = capabilities,
     settings = {
@@ -105,11 +112,11 @@ lspconfig.lua_ls.setup {
             },
         },
     },
-}
+})
 
 --
 -- Setup LSP for YAML
-lspconfig.yamlls.setup {
+vim.lsp.config('yamlls', {
     on_attach = on_attach,
     capabilities = capabilities,
     cmd = { 'yaml-language-server', '--stdio' },
@@ -127,7 +134,7 @@ lspconfig.yamlls.setup {
             telemetry = { enabled = false },
         },
     },
-}
+})
 
 --
 -- Setup LSP for Pyhton - Ruff
