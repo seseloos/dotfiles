@@ -94,7 +94,7 @@ fi
 
 # KUBECONFIG
 #
-export KUBECONFIG="$(ls -1p ~/.kube/config ~/.kube/*.kubecfg | xargs echo | sed 's/ /:/g')"
+# export KUBECONFIG="$(ls -1p ~/.kube/config ~/.kube/*.kubecfg | xargs echo | sed 's/ /:/g')"
 
 # Setup starship prompt
 #

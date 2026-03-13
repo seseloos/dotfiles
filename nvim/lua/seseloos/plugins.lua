@@ -13,7 +13,12 @@ vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
     -- treesitter
-    'nvim-treesitter/nvim-treesitter',
+    {
+        'nvim-treesitter/nvim-treesitter',
+        branch = 'master',
+        lazy = false,
+        build = ':TSUpdate'
+    },
 
     -- lsp
     'neovim/nvim-lspconfig', -- collection of configurations for neovim built-in LSP client
