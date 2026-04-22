@@ -47,6 +47,8 @@ fi
 
 alias git='LANG=en_US.UTF-8 git'
 
+export PATH="/opt/homebrew/bin:$PATH"
+
 # Projects
 export PROJECTS=$HOME/Development/Projects
 
