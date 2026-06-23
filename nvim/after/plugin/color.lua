@@ -5,13 +5,16 @@ vim.opt.background = "dark"
 vim.opt.termguicolors = true
 
 -- catppuccin setup
-vim.g.catppuccin_flavor = "mocha"
 require('catppuccin').setup({
-    transparent_background = true, -- disables setting the background color
+    flavour = "mocha",
+    transparent_background = true,
     integrations = {
-        cmp = true,
+        blink_cmp = true,
         telescope = true,
         treesitter = true,
+        gitsigns = true,
+        dap = true,
+        dap_ui = true,
         native_lsp = {
             enabled = true,
             virtual_text = {

@@ -1,52 +1,37 @@
---
--- Setup neodev
--- MUST be done before lspconfig
-require('neodev').setup({})
+-- Setup lazydev (replaces neodev.nvim) — must be before LSP configs
+require('lazydev').setup({})
 
 local lspconfig = require 'lspconfig'
 local util = require 'lspconfig.util'
-local luasnip = require 'luasnip'
-local cmp = require 'cmp'
 
--- Add additional capabilities
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+-- Capabilities via blink.cmp (replaces cmp-nvim-lsp)
+local capabilities = require('blink.cmp').get_lsp_capabilities()
 
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
+-- Buffer-local keymaps applied on LSP attach
 local on_attach = function(client, bufnr)
-    -- Enable completion triggered by <c-x><c-o>
-    -- NEEDS to be DISABLED when using `nvim-cmp` for the autocompletion
-    -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-    -- Mappings
-    -- See `:help vim.lsp.*` for documentation on any of the below functions
     local bufopts = { noremap = true, silent = true, buffer = bufnr }
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-    -- [F]or[M]at
-    -- vim.keymap.set('n', '<leader>fm', vim.lsp.buf.format, bufopts)
     -- [R]e[n]ame
     vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
     -- [C]ode [A]ction
-    vim.keymap.set('n', 'leader>ca', vim.lsp.buf.code_action, bufopts)
+    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
     -- [G]oto [R]eferences
     vim.keymap.set('n', '<leader>gr', require('telescope.builtin').lsp_references, bufopts)
     -- [G]oto [I]mplementation
     vim.keymap.set('n', '<leader>gI', vim.lsp.buf.implementation, bufopts)
     -- [O]pen [D]iagnostic float
     vim.keymap.set('n', '<leader>od', vim.diagnostic.open_float, bufopts)
-    -- [D]iagnostic Goto [N]ext
+    -- [D]iagnostic Goto [N]ext / [P]revious
     vim.keymap.set('n', '<leader>dn', function() vim.diagnostic.jump({ count = 1, float = true }) end, bufopts)
-    -- [D]iagnostic Goto [P]revious
     vim.keymap.set('n', '<leader>dp', function() vim.diagnostic.jump({ count = -1, float = true }) end, bufopts)
     -- [D]iagnostic set [L]oc list
     vim.keymap.set('n', '<leader>dl', vim.diagnostic.setloclist, bufopts)
 end
 
 --
--- Setup LSP for Go
+-- Go
 vim.lsp.config('gopls', {
     on_attach = on_attach,
     capabilities = capabilities,
@@ -61,61 +46,32 @@ vim.lsp.config('gopls', {
 })
 vim.lsp.enable('gopls')
 
--- Run `gofmt` before writting a buffer
-vim.api.nvim_create_autocmd('BufWritePre', {
-    pattern = { '*.go' },
-    callback = function()
-        vim.lsp.buf.format()
-    end,
-})
-
--- Organize Go imports before writting a buffer
-vim.api.nvim_create_autocmd('BufWritePre', {
-    pattern = '*.go',
-    callback = function()
-        vim.lsp.buf.code_action({
-            context = {
-                only = { 'source.organizeImports' },
-                diagnostics = vim.diagnostic.get(vim.api.nvim_get_current_buf())
-            },
-            apply = true,
-        })
-    end
-})
-
 --
--- Setup LSP for Lua
+-- Lua
 vim.lsp.config('lua_ls', {
     on_attach = on_attach,
     capabilities = capabilities,
     settings = {
         Lua = {
             runtime = {
-                -- used Lua version
                 version = 'LuaJIT',
             },
             diagnostics = {
-                -- Get the language server to recognize the `vim` global
                 globals = { 'vim' },
             },
             completion = {
-                -- enable call snippets and configure it to use folke/neodev
                 callSnippet = "Replace"
             },
-            workspace = {
-                -- Make the server aware of Neovim runtime files
-                library = vim.api.nvim_get_runtime_file("", true),
-            },
-            -- Do not send telemetry data containing a randomized but unique identifier
             telemetry = {
                 enable = false,
             },
         },
     },
 })
+vim.lsp.enable('lua_ls')
 
 --
--- Setup LSP for YAML
+-- YAML (with SchemaStore schemas for docker-compose, GH Actions, k8s, etc.)
 vim.lsp.config('yamlls', {
     on_attach = on_attach,
     capabilities = capabilities,
@@ -126,18 +82,17 @@ vim.lsp.config('yamlls', {
     end,
     settings = {
         yaml = {
-            -- schemas = {
-            --     ["https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.0/schema.yaml"] = "*api.yml"
-            -- },
+            schemas = require('schemastore').yaml.schemas(),
         },
         redhat = {
             telemetry = { enabled = false },
         },
     },
 })
+vim.lsp.enable('yamlls')
 
 --
--- Setup LSP for Pyhton - Ruff
+-- Python — Ruff (linting + formatting)
 vim.lsp.config('ruff', {
     on_attach = on_attach,
     capabilities = capabilities,
@@ -147,32 +102,30 @@ vim.lsp.config('ruff', {
 })
 vim.lsp.enable('ruff')
 
+-- Disable Ruff hover in favor of Pyright
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup('lsp_attach_disable_ruff_hover', { clear = true }),
     callback = function(args)
         local client = vim.lsp.get_client_by_id(args.data.client_id)
-        if client == nil then
-            return
-        end
+        if client == nil then return end
         if client.name == 'ruff' then
-            -- Disable Ruff's hover in favor of Pyright
             client.server_capabilities.hoverProvider = false
         end
     end,
     desc = 'LSP: Disable hover capability of ruff',
 })
 
+--
+-- Python — Pyright (type checking, hover)
 vim.lsp.config('pyright', {
     on_attach = on_attach,
     capabilities = capabilities,
     settings = {
         pyright = {
-            -- Using Ruff's import organizer
             disableOrganizeImports = true,
         },
         python = {
             analysis = {
-                -- Ignore all files for analysis to exclusively use Ruff for linting
                 ignore = { '*' },
             },
         },
@@ -181,43 +134,26 @@ vim.lsp.config('pyright', {
 vim.lsp.enable('pyright')
 
 --
--- Setup autocompletion with `nvim-cmp`
--- Setup nvim-cmp
-cmp.setup {
-    snippet = {
-        expand = function(args)
-            luasnip.lsp_expand(args.body)
-        end,
-    },
-    mapping = cmp.mapping.preset.insert({
-        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-        ['<C-f>'] = cmp.mapping.scroll_docs(4),
-        ['<C-Space>'] = cmp.mapping.complete(),
-        ['<CR>'] = cmp.mapping.confirm {
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
-        },
-        ['<Tab>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_next_item()
-            elseif luasnip.expand_or_jumpable() then
-                luasnip.expand_or_jump()
-            else
-                fallback()
-            end
-        end, { 'i', 's' }),
-        ['<S-Tab>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-                luasnip.jump(-1)
-            else
-                fallback()
-            end
-        end, { 'i', 's' }),
-    }),
-    sources = {
-        { name = 'nvim_lsp' },
-        { name = 'luasnip' },
-    },
-}
+-- Docker — Dockerfile
+vim.lsp.config('dockerls', {
+    on_attach = on_attach,
+    capabilities = capabilities,
+})
+vim.lsp.enable('dockerls')
+
+--
+-- Docker — docker-compose (filetype set by lspconfig's ftdetect)
+vim.lsp.config('docker_compose_language_service', {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    filetypes = { 'yaml.docker-compose' },
+})
+vim.lsp.enable('docker_compose_language_service')
+
+--
+-- Markdown
+vim.lsp.config('marksman', {
+    on_attach = on_attach,
+    capabilities = capabilities,
+})
+vim.lsp.enable('marksman')

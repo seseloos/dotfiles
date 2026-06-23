@@ -1,11 +1,11 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
     vim.fn.system({
         "git",
         "clone",
         "--filter=blob:none",
         "https://github.com/folke/lazy.nvim.git",
-        "--branch=stable", -- latest stable release
+        "--branch=stable",
         lazypath,
     })
 end
@@ -15,24 +15,34 @@ local plugins = {
     -- treesitter
     {
         'nvim-treesitter/nvim-treesitter',
-        branch = 'master',
+        branch = 'main',
         lazy = false,
-        build = ':TSUpdate'
+        build = ':TSUpdate',
     },
 
     -- lsp
-    'neovim/nvim-lspconfig', -- collection of configurations for neovim built-in LSP client
-    "williamboman/mason.nvim", -- managing LSP server, DAP server, linters and formatters
-    "williamboman/mason-lspconfig.nvim", -- bridges gap b/w mason and lspconfig
+    'neovim/nvim-lspconfig',
+    'williamboman/mason.nvim',
+    'williamboman/mason-lspconfig.nvim',
+    'WhoIsSethDaniel/mason-tool-installer.nvim',
 
-    -- autocompletion
-    'hrsh7th/nvim-cmp', -- autocompletion plugin/engine
-    'hrsh7th/cmp-nvim-lsp', -- LSP source for nvim-cmp
-    'folke/neodev.nvim', -- autocompletion for nvim lua API
+    -- lua dev (replaces neodev.nvim)
+    'folke/lazydev.nvim',
 
-    -- snippets
-    'saadparwaiz1/cmp_luasnip', -- snippets source for nvim-cmp
-    'L3MON4D3/LuaSnip', -- snippets plugin/engine
+    -- completion (replaces nvim-cmp stack)
+    {
+        'saghen/blink.cmp',
+        version = '*',
+        dependencies = {
+            {
+                'L3MON4D3/LuaSnip',
+                build = 'make install_jsregexp',
+            },
+        },
+    },
+
+    -- yaml schema validation
+    'b0o/SchemaStore.nvim',
 
     -- telescope
     {
@@ -42,7 +52,6 @@ local plugins = {
     'nvim-telescope/telescope-file-browser.nvim',
 
     -- editing
-    'tpope/vim-commentary', -- motions for commenting stuff out
     {
         'folke/todo-comments.nvim',
         dependencies = { 'nvim-lua/plenary.nvim' },
@@ -60,15 +69,41 @@ local plugins = {
     -- icons
     'nvim-tree/nvim-web-devicons',
 
-    -- util
-    -- {
-    --     -- learn better vim motions by disabling easy motions
-    --    "m4xshen/hardtime.nvim",
-    --    dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
-    --    opts = {}
-    -- },
+    -- formatters
+    'stevearc/conform.nvim',
+
+    -- linters
+    'mfussenegger/nvim-lint',
+
+    -- markdown inline rendering
+    {
+        'MeanderingProgrammer/render-markdown.nvim',
+        ft = { 'markdown' },
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
+        opts = {},
+    },
+
+    -- debugging
+    'mfussenegger/nvim-dap',
+    {
+        'rcarriga/nvim-dap-ui',
+        dependencies = { 'mfussenegger/nvim-dap', 'nvim-neotest/nvim-nio' },
+    },
+    'theHamsta/nvim-dap-virtual-text',
+    'leoluz/nvim-dap-go',
+    'mfussenegger/nvim-dap-python',
+
+    -- testing
+    {
+        'nvim-neotest/neotest',
+        dependencies = {
+            'nvim-neotest/nvim-nio',
+            'nvim-lua/plenary.nvim',
+            'nvim-treesitter/nvim-treesitter',
+        },
+    },
+    'fredrikaverpil/neotest-golang',
+    'nvim-neotest/neotest-python',
 }
 
-local opts = {}
-
-require("lazy").setup(plugins, opts)
+require("lazy").setup(plugins, {})

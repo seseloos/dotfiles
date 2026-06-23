@@ -1,5 +1,6 @@
 -- key mappings
 vim.g.mapleader = ","		    -- new prefix key
+vim.g.maplocalleader = ","
 
 -- line number options
 vim.opt.nu = true		        -- show line numbers
@@ -44,4 +45,8 @@ vim.opt.clipboard = "unnamedplus"   -- enable y and p with the system clipboard
 
 -- misc options
 vim.opt.scrolloff = 20          -- number of lines to keep above and below the cursor
+
+-- disable unused remote providers to suppress checkhealth warnings
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
 

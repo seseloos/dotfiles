@@ -1,8 +1,7 @@
-local noremap = require('seseloos.keymap').noremap
-local nnoremap = require('seseloos.keymap').nnoremap
+local opts = { noremap = true, silent = true }
 
--- telescope quickactions
-nnoremap('<leader>ff', '<CMD>Telescope find_files<CR>')
-nnoremap('<leader>fb', '<CMD>Telescope file_browser<CR>')
-nnoremap('<leader>fg', '<CMD>Telescope live_grep<CR>')
-nnoremap('<leader>bu', '<CMD>Telescope buffers<CR>')
+-- Telescope
+vim.keymap.set('n', '<leader>ff', '<CMD>Telescope find_files<CR>', opts)
+vim.keymap.set('n', '<leader>fb', '<CMD>Telescope file_browser<CR>', opts)
+vim.keymap.set('n', '<leader>fg', '<CMD>Telescope live_grep<CR>', opts)
+vim.keymap.set('n', '<leader>bu', '<CMD>Telescope buffers<CR>', opts)

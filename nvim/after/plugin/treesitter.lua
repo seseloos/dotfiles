@@ -1,32 +1,5 @@
-local configs = require 'nvim-treesitter.configs'
-configs.setup {
-    ensure_installed = {
-        "bash",
-        "css",
-        "dockerfile",
-        "go",
-        "gomod",
-        "gosum",
-        "gowork",
-        -- "help",
-        "html",
-        "javascript",
-        "json",
-        "lua",
-        "make",
-        "markdown",
-        "markdown_inline",
-        "python",
-        "regex",
-        -- Python/pip requirements
-        "requirements",
-        "rust",
-        "scss",
-        "sql",
-        "toml",
-        "yaml",
-    },
-    highlight = {
-        enable = true
-    }
-}
+-- nvim-treesitter main branch: no configs.setup() — vim.treesitter handles
+-- highlighting automatically via the installed parsers.
+-- Install / update parsers manually with :TSInstall <lang> or :TSUpdate.
+-- Note: the main branch requires tree-sitter-cli for compilation:
+--   brew install tree-sitter
